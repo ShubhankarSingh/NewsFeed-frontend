@@ -19,8 +19,8 @@ const AuthService = {
             const response = await axios.post(`${API_BASE_URL}/register`, registerRequest);
             return response.data;
         }catch(error){
-            console.log("Login error: ", error);
-            throw error?.response?.data?.message || "Login failed";
+            console.log("Registeration error: ", error);
+            throw error?.response?.data?.message || "Registeration failed";
 
         }
     }

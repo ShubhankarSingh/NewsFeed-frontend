@@ -1,24 +1,21 @@
 import React, { useState } from 'react'
-import {useNavigate} from "react-router-dom"
-const LoginPage = () => {
-    const [formData, setFormData] = useState({ email: "",  password: "" });
-    const [error, setError] = useState(null);
-    const navigate = useNavigate();
+import AuthService from "../services/AuthService";
 
+const RegisterPage = () => {
+
+    const [formData, setFormData] = useState({ email: "",  password: "" });
 
     const handleChange = (e) =>{
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        setError(null);
         try{
-            await AuthService.login(formData);
-            alert("Login Successful!");
-            navigate("/dashboard");
+            const response = await AuthService.register(formData);
+            alert("Registeration Successful!");
         }catch(err){
-            setError(err);
+            alert(err);
         }
     };
 
@@ -26,15 +23,14 @@ const LoginPage = () => {
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card p-4 shadow-lg" style={{ width: "100%", maxWidth: "400px" }}>
-                <h3 className="text-center mb-4">Login</h3>
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <form onSubmit={handleLogin}>
+                <h3 className="text-center mb-4">Register</h3>
+                <form onSubmit={handleRegister}>
                 <div className="mb-3">
                     <input
-                    type="text"
+                    type="email"
                     className="form-control"
-                    name="username"
-                    placeholder="Username"
+                    name="email"
+                    placeholder="Email"
                     onChange={handleChange}
                     required
                     />
@@ -58,4 +54,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default RegisterPage

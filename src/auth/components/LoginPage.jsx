@@ -1,21 +1,27 @@
 import React, { useState } from 'react'
+import {useNavigate} from "react-router-dom"
+import { useAuth } from "../context/AuthContext";
 import AuthService from "../services/AuthService";
 
-const RegisterPage = () => {
+const LoginPage = () => {
+    const [formData, setFormData] = useState({ email: "",  password: "" });
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({ username: "", email: "",  password: "" });
+    const {login} = useAuth();
 
     const handleChange = (e) =>{
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
-    const handleRegister = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
+        setError(null);
         try{
-            const response = await AuthService.register(formData);
-            alert("Registeration Successful!");
+            const res = await AuthService.login(formData);
+            login(res.token)
         }catch(err){
-            alert(err);
+            setError(err.message || "Login failed");
         }
     };
 
@@ -23,14 +29,15 @@ const RegisterPage = () => {
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card p-4 shadow-lg" style={{ width: "100%", maxWidth: "400px" }}>
-                <h3 className="text-center mb-4">Register</h3>
-                <form onSubmit={handleRegister}>
+                <h3 className="text-center mb-4">Login</h3>
+                {error && <p style={{ color: "red" }}>{error}</p>}
+                <form onSubmit={handleLogin}>
                 <div className="mb-3">
                     <input
-                    type="text"
+                    type="email"
                     className="form-control"
-                    name="username"
-                    placeholder="Username"
+                    name="email"
+                    placeholder="Email"
                     onChange={handleChange}
                     required
                     />
@@ -46,7 +53,7 @@ const RegisterPage = () => {
                     />
                 </div>
                 <button type="submit" className="btn btn-primary w-100">
-                    Register
+                    Login
                 </button>
                 </form>
             </div>
@@ -54,4 +61,4 @@ const RegisterPage = () => {
     )
 }
 
-export default RegisterPage
+export default LoginPage
