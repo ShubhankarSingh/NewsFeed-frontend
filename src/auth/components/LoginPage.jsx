@@ -21,7 +21,7 @@ const LoginPage = () => {
             const res = await AuthService.login(formData);
             login(res.token)
         }catch(err){
-            setError(err.message || "Login failed");
+            setError(err);
         }
     };
 

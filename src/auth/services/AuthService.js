@@ -8,9 +8,8 @@ const AuthService = {
             const response = await axios.post(`${API_BASE_URL}/login`, loginRequest);
             return response.data;
         }catch(error){
-            console.log("Login error: ", error);
-            throw error?.response?.data?.message || "Login failed";
-
+            console.log("Login error: ", error.response.data);
+            throw error.response.data.message || "Login failed";
         }
     },
 
@@ -20,8 +19,7 @@ const AuthService = {
             return response.data;
         }catch(error){
             console.log("Registeration error: ", error);
-            throw error?.response?.data?.message || "Registeration failed";
-
+            throw error.response.data.message || "Registeration failed";
         }
     }
 }
